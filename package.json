@@ -1,0 +1,53 @@
+{
+  "name": "prod",
+  "description": "A brief description of your app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",  
+    "package": "electron-forge package", 
+    "make": "electron-forge make", 
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\"",
+    "postinstall": "electron-rebuild"
+  },
+  "forge": {
+    "makers": [
+      {
+        "name": "@electron-forge/maker-deb",
+        "config": {}
+      },
+      {
+        "name": "@electron-forge/maker-zip",
+        "platforms": [
+          "linux"
+        ]
+      }
+    ],
+    "packagerConfig": {
+      "extraResource": [
+        "./demo_tableeeee.db",
+        "./public/PersonManager.js",
+        "./public/DBManager.js",
+        "preload.js",
+        "main.js"
+      ]
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.2.1",
+    "electron-squirrel-startup": "^1.0.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.4.2",
+    "@electron-forge/maker-deb": "^6.4.2",
+    "@electron-forge/maker-rpm": "^6.4.2",
+    "@electron-forge/maker-squirrel": "^6.4.2",
+    "@electron-forge/maker-zip": "^6.4.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+    "@types/better-sqlite3": "^7.6.12",
+    "electron": "^32.0.2",
+    "electron-rebuild": "^3.2.9"
+  },
+  "license": "MIT"
+}
