@@ -1,31 +1,38 @@
+// main.js
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 function createMainWindow() {
-    // Set environment for production (disable security warnings)
-    process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'false';  // Disable security warnings for production
+  // Set environment for production (if needed)
+  process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-    const mainWindow = new BrowserWindow({
-        title: 'Electron',
-        width: 1000,
-        height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: false,  // Disable nodeIntegration in production for security
-            contextIsolation: true,
-            sandbox: true,  // Enable sandboxing for extra security
-        },
-    });
+  const mainWindow = new BrowserWindow({
+    title: 'Electron',
+    width: 1000,
+    height: 600,
+    webPreferences: {
+        preload: path.join(__dirname, 'preload.js'),
+        nodeIntegration: false,
+        contextIsolation: true,
+        // Turn off sandbox so preload can use require('path'):
+        sandbox: false
+    },
+  });
 
-    // Do not open dev tools in production
-    // mainWindow.webContents.openDevTools();
+  // In production, do NOT open dev tools automatically
+  // mainWindow.webContents.openDevTools();
 
-    // Load the production build of the app
-    mainWindow.loadFile(path.join(__dirname, 'Frontend/build/index.html'));
+  // Load the production build of your React app
+  mainWindow.loadFile(path.join(__dirname, 'Frontend', 'build', 'index.html'));
 }
 
 app.whenReady().then(createMainWindow);
 
-ipcMain.on('submit:todoForm', (event, opts) => {
-    console.log(opts);
+// Example IPC listener
+ipcMain.on('submit:todoForm', (event, data) => {
+  console.log("Received from renderer:", data);
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
 });

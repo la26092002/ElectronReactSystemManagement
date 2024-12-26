@@ -1,3 +1,4 @@
+// public/PersonManager.js
 const dbmgr = require("./DBManager");
 const db = dbmgr.db;
 
