@@ -8,6 +8,7 @@ const readAllBuyers = () => {
         const query = `SELECT * FROM buyer`;
         const readQuery = db.prepare(query);
         const rowList = readQuery.all();
+        console.log("hello")
         return rowList;
     } catch (err) {
         console.error(err);

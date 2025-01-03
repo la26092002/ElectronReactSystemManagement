@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  react-frontend:
+    build:
+      context: ./Frontend
+    ports:
+      - "3000:80"  # Frontend will be accessible on port 3000
+    container_name: react_frontend
+
+  electron-app:
+    build:
+      context: .
+    environment:
+      - DISPLAY=${DISPLAY}  # Ensure your DISPLAY variable is set correctly (you may not need this on Windows)
+    container_name: electron_app
+    ports:
+      - "3001:3000"  # Electron app can run on a separate port
+    depends_on:
+      - react-frontend  # Ensure Electron starts after frontend
